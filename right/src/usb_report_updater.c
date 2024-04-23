@@ -357,6 +357,14 @@ static void commitKeyState(key_state_t *keyState, bool active)
     if (Shell.keyLog) {
         Log("Key %i %s", Utils_KeyStateToKeyId(keyState), active ? "down" : "up");
     }
+
+#if DEVICE_IS_UHK80_RIGHT
+    const char* s = "key pressed!";
+
+    // How do I know where this is sending stuff?
+    SendPeripheralUart(s, strlen(s));
+#endif
+
 #endif
 
     if (PostponerCore_IsActive()) {

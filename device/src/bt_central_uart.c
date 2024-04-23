@@ -32,6 +32,8 @@ static uint8_t ble_data_received(struct bt_nus_client *nus, const uint8_t *data,
     for (uint8_t keyId = 0; keyId < MAX_KEY_COUNT_PER_MODULE; keyId++) {
         KeyStates[SlotId_LeftKeyboardHalf][keyId].hardwareSwitchState = !!(data[keyId/8] & (1 << (keyId % 8)));
     }
+#else
+    printk("NUS data received from %s: %s\n", GetPeerStringByConn(nus->conn), data);
 #endif
     return BT_GATT_ITER_CONTINUE;
 }

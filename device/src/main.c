@@ -53,7 +53,7 @@ int main(void) {
     bt_init();
     InitSettings();
 
-#if DEVICE_IS_UHK80_LEFT
+#if DEVICE_IS_UHK80_LEFT || DEVICE_IS_UHK80_RIGHT
     InitPeripheralUart();
 #endif
 
