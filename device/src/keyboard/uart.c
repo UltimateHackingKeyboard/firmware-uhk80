@@ -213,6 +213,8 @@ static void updateConnectionState() {
 }
 
 void testUart() {
+    // make sure that if a device restarts, other half notices broken connection
+    k_sleep(K_MSEC(UART_TIMEOUT+100));
     while (1) {
         ping();
         updateConnectionState();
