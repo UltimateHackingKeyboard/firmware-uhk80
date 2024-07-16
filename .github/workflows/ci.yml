@@ -64,11 +64,11 @@ jobs:
 
       - name: Install node dependencies in scripts folder
         run: |
-          cd scripts
+          cd firmware-uhk80/scripts
           npm install
 
       - name: Create firmware tarball
-        run: scripts/make-release.mjs --allowSha
+        run: firmware-uhk80/scripts/make-release.mjs --allowSha
 
       - name: List scripts folder
         run: ls -la scripts
