@@ -24,6 +24,12 @@ jobs:
       - name: West init
         run: west init
 
+      - name: West update
+        run: west update
+
+      - name: West patch
+        run: west patch
+
 #      - name: Use Node.js (.nvmrc)
 #        uses: actions/setup-node@v4
 #        with:
