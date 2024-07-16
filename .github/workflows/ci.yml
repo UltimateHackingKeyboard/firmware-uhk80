@@ -23,7 +23,7 @@ jobs:
           node-version-file: scripts/.nvmrc
           cache: npm
 
-      - name: Install node dependencies
+      - name: Install node dependencies in scripts folder
         run: |
           cd scripts
           npm install
