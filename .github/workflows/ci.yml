@@ -33,7 +33,7 @@ jobs:
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
           app-path: app
-          toolchains: arm-zephyr-eabi
+          toolchains: all
 
       - name: workdir dir
         run: pwd
