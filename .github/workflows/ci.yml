@@ -31,6 +31,5 @@ jobs:
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: device
+          app-path: '.'
           toolchains: arm-zephyr-eabi
-          manifest-file-name: '/home/runner/work/firmware-uhk80/firmware-uhk80/west.yml'
