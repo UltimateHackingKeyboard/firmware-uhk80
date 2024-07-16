@@ -39,5 +39,5 @@ jobs:
         if: always()
 
       - name: list dir
-        run: ls -la
+        run: tree
         if: always()
