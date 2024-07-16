@@ -11,6 +11,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-22.04
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
@@ -72,5 +73,10 @@ jobs:
           cd firmware-uhk80
           scripts/make-release.mjs --allowSha
 
-      - name: List scripts folder
-        run: ls -la firmware-uhk80/scripts
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: firmware-uhk80/scripts/uhk-firmware-*.tar.gz
+          compression-level: 0
+          retention-days: 10
