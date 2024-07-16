@@ -15,6 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          path: firmware-uhk80
           submodules: recursive
           token: '${{ secrets.FIRMWARE80_BUILD }}'
 
@@ -26,41 +27,48 @@ jobs:
 
       - name: Install python dependencies of scripts
         run: |
-          cd scripts
+          cd firmware-uhk80/scripts
           pip install -r requirements.txt
 
-      - name: West init
-        run: west init -l .
-
-      - name: West update
-        run: west update
-
-      - name: Git user setup
-        run: |
-          git config --global user.email "git-patch@uhk.com"
-          git config --global user.name "Git Patch"
-
-      - name: West patch
-        run: west patch
-
-      - name: West config
-        run: west config --local build.cmake-args -- "-Wno-dev"
-
-      - name: West Zephyr export
-        run: west zephyr-export
-
-      - name: Use Node.js (.nvmrc)
-        uses: actions/setup-node@v4
+      - name: Setup Zephyr project
+        uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          node-version-file: scripts/.nvmrc
+          app-path: firmware-uhk80
+          toolchains: arm-zephyr-eabi
+          sdk-version: 0.16.8
 
-      - name: Install node dependencies in scripts folder
-        run: |
-          cd scripts
-          npm install
+#      - name: West init
+#        run: west init -l .
+#
+#      - name: West update
+#        run: west update
 
-      - name: Create firmware tarball
-        run: scripts/make-release.mjs --allowSha
-
-      - name: List scripts folder
-        run: ls -la scripts
+#      - name: Git user setup
+#        run: |
+#          git config --global user.email "git-patch@uhk.com"
+#          git config --global user.name "Git Patch"
+#
+#      - name: West patch
+#        run: west patch
+#
+#      - name: West config
+#        run: west config --local build.cmake-args -- "-Wno-dev"
+#
+#      - name: West Zephyr export
+#        run: west zephyr-export
+#
+#      - name: Use Node.js (.nvmrc)
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version-file: scripts/.nvmrc
+#
+#      - name: Install node dependencies in scripts folder
+#        run: |
+#          cd scripts
+#          npm install
+#
+#      - name: Create firmware tarball
+#        run: scripts/make-release.mjs --allowSha
+#
+#      - name: List scripts folder
+#        run: ls -la scripts
