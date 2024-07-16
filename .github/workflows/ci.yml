@@ -35,6 +35,11 @@ jobs:
       - name: West update
         run: west update
 
+      - name: Git user setup
+        run: |
+          git config --global user.email "git-patch@uhk.com"
+          git config --global user.name "Git Patch"
+
       - name: West patch
         run: west patch
 
