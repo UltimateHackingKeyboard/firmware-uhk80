@@ -15,15 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: 'firmware-uhk80'
           submodules: recursive
           token: '${{ secrets.FIRMWARE80_BUILD }}'
 
       - name: Install west
         run: pip3 install --user -U west
 
-      - name: West init -l firmware-uhk80
-        run: west init
+      - name: West init
+        run: west init -l .
 
       - name: West update
         run: west update
