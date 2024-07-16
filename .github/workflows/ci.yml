@@ -21,7 +21,7 @@ jobs:
       - name: Install west
         run: pip3 install --user -U west
 
-      - name: West init
+      - name: West init -l .
         run: west init
 
       - name: West update
