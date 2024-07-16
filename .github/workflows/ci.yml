@@ -38,6 +38,9 @@ jobs:
       - name: West patch
         run: west patch
 
+      - name: West config
+        run: west config --local build.cmake-args -- "-Wno-dev"
+
       - name: Use Node.js (.nvmrc)
         uses: actions/setup-node@v4
         with:
