@@ -15,12 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: app
           submodules: recursive
           token: '${{ secrets.FIRMWARE80_BUILD }}'
 
       - name: Install west
         run: pip3 install --user -U west
+
+      - name: West init
+        run: west init
 
 #      - name: Use Node.js (.nvmrc)
 #        uses: actions/setup-node@v4
