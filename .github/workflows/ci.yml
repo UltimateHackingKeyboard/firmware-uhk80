@@ -31,6 +31,6 @@ jobs:
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: device
+          app-path: .
           toolchains: arm-zephyr-eabi
           manifest-file-name: west.yml
