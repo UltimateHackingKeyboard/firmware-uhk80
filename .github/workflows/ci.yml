@@ -33,3 +33,4 @@ jobs:
         with:
           app-path: device
           toolchains: arm-zephyr-eabi
+          manifest-file-name: './west.yml'
