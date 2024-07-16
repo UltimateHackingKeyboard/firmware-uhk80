@@ -46,6 +46,9 @@ jobs:
       - name: West config
         run: west config --local build.cmake-args -- "-Wno-dev"
 
+      - name: West Zephyr export
+        run: west zephyr-export
+
       - name: Use Node.js (.nvmrc)
         uses: actions/setup-node@v4
         with:
