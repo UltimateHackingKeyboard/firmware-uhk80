@@ -33,3 +33,9 @@ jobs:
         with:
           app-path: '.'
           toolchains: arm-zephyr-eabi
+
+      - name: workdir dir
+        run: pwd
+
+      - name: list dir
+        run: ls -la
