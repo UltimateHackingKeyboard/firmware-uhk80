@@ -21,6 +21,11 @@ jobs:
       - name: Install west
         run: pip3 install --user -U west
 
+      - name: Install python dependencies of scripts
+        run: |
+          cd scripts
+          pip install -r requirements.txt
+
       - name: West init
         run: west init -l .
 
