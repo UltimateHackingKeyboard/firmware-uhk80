@@ -38,12 +38,6 @@ jobs:
           toolchains: arm-zephyr-eabi
           sdk-version: 0.16.8
 
-#      - name: West init
-#        run: west init -l .
-#
-#      - name: West update
-#        run: west update
-
       - name: Git user setup
         run: |
           git config --global user.email "git-patch@uhk.com"
@@ -54,10 +48,7 @@ jobs:
 
       - name: West config
         run: west config --local build.cmake-args -- "-Wno-dev"
-#
-#      - name: West Zephyr export
-#        run: west zephyr-export
-#
+
       - name: Use Node.js (.nvmrc)
         uses: actions/setup-node@v4
         with:
