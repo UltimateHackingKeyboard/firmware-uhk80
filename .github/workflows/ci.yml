@@ -36,6 +36,8 @@ jobs:
 
       - name: workdir dir
         run: pwd
+        if: always()
 
       - name: list dir
         run: ls -la
+        if: always()
