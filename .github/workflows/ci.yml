@@ -45,3 +45,8 @@ jobs:
           cd scripts
           npm install
 
+      - name: Create firmware tarball
+        run: scripts/make-release.js
+
+      - name: List scripts folder
+        run: ls -la scripts
