@@ -19,6 +19,9 @@ jobs:
           submodules: recursive
           token: '${{ secrets.FIRMWARE80_BUILD }}'
 
+      - name: Install west
+        run: pip3 install --user -U west
+
 #      - name: Use Node.js (.nvmrc)
 #        uses: actions/setup-node@v4
 #        with:
@@ -29,16 +32,16 @@ jobs:
 #          cd app/scripts
 #          npm install
 
-      - name: Setup Zephyr project
-        uses: zephyrproject-rtos/action-zephyr-setup@v1
-        with:
-          app-path: app
-          toolchains: all
-
-      - name: workdir dir
-        run: pwd
-        if: always()
-
-      - name: list dir
-        run: tree -L 3 ..
-        if: always()
+#      - name: Setup Zephyr project
+#        uses: zephyrproject-rtos/action-zephyr-setup@v1
+#        with:
+#          app-path: app
+#          toolchains: all
+#
+#      - name: workdir dir
+#        run: pwd
+#        if: always()
+#
+#      - name: list dir
+#        run: tree -L 3 ..
+#        if: always()
