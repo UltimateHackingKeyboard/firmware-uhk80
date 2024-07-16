@@ -15,7 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
+          path: app
+          submodules: recursive
           token: '${{ secrets.FIRMWARE80_BUILD }}'
 
       - name: Use Node.js (.nvmrc)
@@ -31,7 +32,7 @@ jobs:
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: '.'
+          app-path: app
           toolchains: arm-zephyr-eabi
 
       - name: workdir dir
@@ -39,5 +40,5 @@ jobs:
         if: always()
 
       - name: list dir
-        run: tree
+        run: tree ..
         if: always()
