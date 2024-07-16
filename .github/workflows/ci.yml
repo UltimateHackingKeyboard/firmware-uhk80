@@ -68,7 +68,9 @@ jobs:
           npm install
 
       - name: Create firmware tarball
-        run: firmware-uhk80/scripts/make-release.mjs --allowSha
+        run: |
+          cd firmware-uhk80
+          scripts/make-release.mjs --allowSha
 
       - name: List scripts folder
         run: ls -la scripts
