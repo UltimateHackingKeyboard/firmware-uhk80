@@ -73,4 +73,4 @@ jobs:
           scripts/make-release.mjs --allowSha
 
       - name: List scripts folder
-        run: ls -la scripts
+        run: ls -la firmware-uhk80/scripts
