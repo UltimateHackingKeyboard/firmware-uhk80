@@ -33,4 +33,4 @@ jobs:
         with:
           app-path: device
           toolchains: arm-zephyr-eabi
-          manifest-file-name: './west.yml'
+          manifest-file-name: '/home/runner/work/firmware-uhk80/firmware-uhk80/west.yml'
