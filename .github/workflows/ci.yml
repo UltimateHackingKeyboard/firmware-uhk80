@@ -19,15 +19,15 @@ jobs:
           submodules: recursive
           token: '${{ secrets.FIRMWARE80_BUILD }}'
 
-      - name: Use Node.js (.nvmrc)
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: scripts/.nvmrc
-
-      - name: Install node dependencies in scripts folder
-        run: |
-          cd scripts
-          npm install
+#      - name: Use Node.js (.nvmrc)
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version-file: app/scripts/.nvmrc
+#
+#      - name: Install node dependencies in scripts folder
+#        run: |
+#          cd app/scripts
+#          npm install
 
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
