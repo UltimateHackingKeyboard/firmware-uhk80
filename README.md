@@ -45,7 +45,7 @@ Then, depending whether you want a full IDE experience or just minimal tools for
 - Install commandline stuff from [nRF Connect SDK](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/installation/install_ncs.html)
 - Launch nrfutil shell:
     ```
-    nrfutil toolchain-manager launch --shell --ncs-version v2.6.1
+    nrfutil toolchain-manager launch --shell --ncs-version v2.7.0
     ```
 - In the shell, you can build (e.g.) uhk-80-left as follows:
   - full build including cmake steps, as extracted from VS Code:
