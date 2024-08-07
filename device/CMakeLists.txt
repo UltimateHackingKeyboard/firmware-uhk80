@@ -46,3 +46,30 @@ if(NOT BOARD STREQUAL "uhk-60-right")
         c2usb
     )
 endif()
+
+# Adding config.bin to the final image
+if (TRUE)
+    # create linker script section for user configuration from DT information
+    dt_nodelabel(USER_CONFIG_PARTITION_PATH NODELABEL "user_config_partition")
+    dt_reg_addr(USER_CONFIG_PARTITION_ADDRESS PATH ${USER_CONFIG_PARTITION_PATH})
+    dt_reg_size(USER_CONFIG_PARTITION_SIZE PATH ${USER_CONFIG_PARTITION_PATH})
+
+    zephyr_linker_memory(NAME USER_CONFIG
+        FLAGS r
+        START ${USER_CONFIG_PARTITION_ADDRESS}
+        SIZE ${USER_CONFIG_PARTITION_SIZE}
+    )
+    zephyr_linker_section(NAME .userconfig GROUP USER_CONFIG)
+
+    # the assembly file places the binaries in the correct memory regions
+    set(CONFIG_BIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/config.bin")
+    set(CONFIGS_ASM_FILE "${CMAKE_BINARY_DIR}/configs_assembly.S")
+    file(WRITE "${CONFIGS_ASM_FILE}" "
+        .section .userconfig
+        .incbin \"${CONFIG_BIN_PATH}\"
+    ")
+    set_source_files_properties(${CONFIGS_ASM_FILE} PROPERTIES GENERATED TRUE)
+
+    # add it to the final elf image target
+    target_sources(${logical_target_for_zephyr_elf} PRIVATE ${CONFIGS_ASM_FILE})
+endif()
