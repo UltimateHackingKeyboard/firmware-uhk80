@@ -74,6 +74,7 @@ uint8_t NativeActionInputModifiers;
 uint8_t InputModifiers;
 uint8_t InputModifiersPrevious;
 uint8_t OutputModifiers;
+uint8_t OutputModifiersPrevious;
 bool SuppressMods = false;
 bool SuppressKeys = false;
 
@@ -591,6 +592,7 @@ static void updateActiveUsbReports(void)
 {
     EventVector_Unset(EventVector_ReportsChanged);
     InputModifiersPrevious = InputModifiers;
+    OutputModifiersPrevious = OutputModifiers;
     OutputModifiers = 0;
 
     if (EventVector_IsSet(EventVector_MacroEngine)) {
@@ -624,6 +626,11 @@ static void updateActiveUsbReports(void)
 
     if (EventVector_IsSet(EventVector_MouseController)) {
         MouseController_ProcessMouseActions();
+    }
+
+    // This is required by release of sticky modifiers - last report is placed into output modifiers
+    if (OutputModifiers != OutputModifiersPrevious) {
+        EventVector_Set(EventVector_ReportsChanged);
     }
 
     PostponerCore_FinishCycle();
