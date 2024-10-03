@@ -65,8 +65,8 @@ class multi_hid : public hid::multi_application {
 };
 
 struct usb_manager {
-    static usb::df::zephyr::udc_mac &mac() { return instance().mac_; }
-    static usb::df::device &device() { return instance().device_; }
+    static auto &mac() { return instance().mac_; }
+    static auto &device() { return instance().device_; }
     static bool active() { return device().is_open(); }
 
     void select_config(hid_config_t conf)
@@ -165,7 +165,7 @@ struct usb_manager {
         });
     }
 
-    usb::df::zephyr::udc_mac mac_{DEVICE_DT_GET(DT_NODELABEL(zephyr_udc0))};
+    usb::zephyr::udc_mac mac_{DEVICE_DT_GET(DT_NODELABEL(zephyr_udc0))};
     usb::df::microsoft::alternate_enumeration<usb::speeds(usb::speed::FULL)> ms_enum_{};
     usb::df::device_instance<usb::speeds(usb::speed::FULL)> device_{mac_, product_info, ms_enum_};
 };
