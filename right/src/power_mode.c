@@ -95,7 +95,7 @@ void PowerMode_ActivateMode(power_mode_t mode, bool toggle) {
 
 void PowerMode_WakeHost() {
 #ifdef __ZEPHYR__
-    USB_RemoteWakeup();
+    // USB_RemoteWakeup();
 #else
     WakeUpHost();
 #endif
