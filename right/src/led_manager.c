@@ -94,7 +94,13 @@ void LedManager_UpdateSleepModes() {
         EventScheduler_Schedule(UsbReportUpdater_LastActivityTime + keyBacklightTimeout, EventSchedulerEvent_UpdateLedSleepModes, "LedManager - update key backlight sleep mode");
     }
 
-    uint32_t displayTimeout = RunningOnBattery ? Cfg.DisplayFadeOutBatteryTimeout : Cfg.DisplayFadeOutTimeout;
+    bool isRightBatteryPowered = false;
+
+#ifdef __ZEPHYR__
+    isRightBatteryPowered = !SyncRightHalfState.battery.powered;
+#endif
+
+    uint32_t displayTimeout = isRightBatteryPowered ? Cfg.DisplayFadeOutBatteryTimeout : Cfg.DisplayFadeOutTimeout;
     if (elapsedTime >= displayTimeout && !DisplaySleepModeActive && displayTimeout) {
         DisplaySleepModeActive = true;
         ledsNeedUpdate = true;
