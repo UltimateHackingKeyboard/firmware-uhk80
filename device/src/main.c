@@ -39,6 +39,7 @@
 #include "debug_eventloop_timing.h"
 #include <zephyr/drivers/gpio.h>
 #include "dongle_leds.h"
+#include <zephyr/drivers/gpio.h>
 
 k_tid_t Main_ThreadId = 0;
 
@@ -99,6 +100,16 @@ void Main_Wake() {
 int main(void) {
     Main_ThreadId = k_current_get();
     printk("----------\n" DEVICE_NAME " started\n");
+
+    const struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(DT_ALIAS(led0_green), gpios);
+    gpio_pin_configure_dt(&led0, GPIO_OUTPUT);
+    DongleLeds_Set(true, true, true);
+    gpio_pin_set_dt(&led0, true);
+    k_sleep(K_MSEC(1000));
+    DongleLeds_Set(false, false, false);
+    gpio_pin_set_dt(&led0, false);
+    k_sleep(K_MSEC(10000));
+//    k_sleep(K_MSEC(1000000000));
 
     if (DEVICE_IS_UHK80_RIGHT) {
         flash_area_open(FLASH_AREA_ID(hardware_config_partition), &hardwareConfigArea);
