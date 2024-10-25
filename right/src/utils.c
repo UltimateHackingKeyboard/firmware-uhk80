@@ -69,7 +69,7 @@ void Utils_DecodeId(uint16_t keyid, uint8_t* outSlotId, uint8_t* outSlotIdx)
 
 static void Utils_SetStatusScancodeCharacter(uint8_t scancode)
 {
-    Macros_SetStatusChar(MacroShortcutParser_ScancodeToCharacter(scancode));
+    printk("%c", MacroShortcutParser_ScancodeToCharacter(scancode));
 }
 
 static bool reportModifiers(uint8_t modifiers)
@@ -81,28 +81,28 @@ static bool reportModifiers(uint8_t modifiers)
             modifierFound = true;
             switch (modifier) {
                 case HID_KEYBOARD_MODIFIER_LEFTCTRL:
-                    Macros_SetStatusString("LC", NULL);
+                    printk("LC", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_LEFTSHIFT:
-                    Macros_SetStatusString("LS", NULL);
+                    printk("LS", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_LEFTALT:
-                    Macros_SetStatusString("LA", NULL);
+                    printk("LA", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_LEFTGUI:
-                    Macros_SetStatusString("LG", NULL);
+                    printk("LG", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_RIGHTCTRL:
-                    Macros_SetStatusString("RC", NULL);
+                    printk("RC", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_RIGHTSHIFT:
-                    Macros_SetStatusString("RS", NULL);
+                    printk("RS", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_RIGHTALT:
-                    Macros_SetStatusString("RA", NULL);
+                    printk("RA", NULL);
                     break;
                 case HID_KEYBOARD_MODIFIER_RIGHTGUI:
-                    Macros_SetStatusString("RG", NULL);
+                    printk("RG", NULL);
       break;
             }
         }
@@ -112,9 +112,9 @@ static bool reportModifiers(uint8_t modifiers)
 
 void Utils_PrintReport(const char* prefix, usb_basic_keyboard_report_t* report)
 {
-    Macros_SetStatusString(prefix, NULL);
+    printk(prefix, NULL);
 
-    Macros_SetStatusString(" ", NULL);
+    printk(" ", NULL);
 
     bool modifierFound = reportModifiers(report->modifiers);
 
@@ -124,7 +124,7 @@ void Utils_PrintReport(const char* prefix, usb_basic_keyboard_report_t* report)
 
     UsbBasicKeyboard_ForeachScancode(report, &Utils_SetStatusScancodeCharacter);
 
-    Macros_SetStatusString("\n", NULL);
+    printk("\n", NULL);
 }
 
 void Utils_SafeStrCopy(char* target, const char* src, uint8_t max) {
