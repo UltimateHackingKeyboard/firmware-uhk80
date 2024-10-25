@@ -293,7 +293,7 @@ static void clearScancodes()
 
 macro_result_t Macros_DispatchText(const char* text, uint16_t textLen, bool rawString)
 {
-    const uint8_t maxGroupSize=3;
+    const uint8_t maxGroupSize=1;
     static uint8_t currentReportSize=0;
     S->ms.reportsUsed = true;
     static macro_state_t* dispatchMutex = NULL;
