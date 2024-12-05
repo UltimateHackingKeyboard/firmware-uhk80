@@ -1,9 +1,10 @@
 #!/bin/bash
 
-NCS_VERSION=v2.6.1
+NCS_VERSION=v2.8.0
 
-BUILD_SESSION_NAME="buildsession"
-UART_SESSION_NAME="uartsession"
+ROOT_HASH=`realpath . | md5sum | sed 's/ .*//g'`
+BUILD_SESSION_NAME="buildsession_$ROOT_HASH"
+UART_SESSION_NAME="uartsession_$ROOT_HASH"
 
 function help() {
     cat << END
@@ -224,6 +225,12 @@ function createCentralCompileCommands() {
     mv $TEMP_COMMANDS $ROOT/compile_commands.json
 }
 
+function getExtraConfFiles() {
+    DEVICE=$1
+    EXTRA_CONF_FILES=`jq -r '.configurePresets[] | select(.name == "build/'"$DEVICE"'") | .cacheVariables.EXTRA_CONF_FILE' device/CMakePresets.json`
+    echo "$EXTRA_CONF_FILES" | sed 's=${sourceDir}='"$ROOT"/device'=g'
+}
+
 function performAction() {
     DEVICE=$1
     ACTION=$2
@@ -232,28 +239,45 @@ function performAction() {
     case $ACTION in
         update)
             git submodule update --init --recursive
+            west update
+            west patch
+            west config --local build.cmake-args -- "-Wno-dev"
+            cd "$ROOT/scripts"
+            npm ci
+            ./generate-versions.mjs
             ;;
         clean)
-            rm -rf device/build .west bootloader modules nrf nrfxlib test tools zephyr
+            rm -rf ../bootloader  ../c2usb  ../hal_nxp  ../modules  ../nrf  ../nrfxlib  ../zephyr ../.west
             ;;
         setup)
+            # update this according to README
             git submodule init
             git submodule update --init --recursive
-            nrfutil install toolchain-manager
-            nrfutil toolchain-manager install --ncs-version $NCS_VERSION
-            nrfutil toolchain-manager launch --shell << END
-                west init -m https://github.com/nrfconnect/sdk-nrf --mr $NCS_VERSION
-                west update
-                west zephyr-export
-END
+            cd "$ROOT/.."
+            west init -l "$ROOT"
+            west update
+            west patch
+            west config --local build.cmake-args -- "-Wno-dev"
+            cd "$ROOT/scripts"
+            npm i
+            ./generate-versions.mjs
             ;;
         build)
             # reference version of the build process is to be found in scripts/make-release.mjs
             nrfutil toolchain-manager launch --shell --ncs-version $NCS_VERSION << END
                 unset PYTHONPATH
                 unset PYTHONHOME
-                ZEPHYR_TOOLCHAIN_VARIANT=zephyr west build --build-dir "$ROOT/device/build/$DEVICE" "$ROOT/device" --pristine --board "$DEVICE" --no-sysbuild -- -DNCS_TOOLCHAIN_VERSION=NONE -DEXTRA_CONF_FILE=prj.conf.overlays/$DEVICE.prj.conf -DBOARD_ROOT="$ROOT" -Dmcuboot_OVERLAY_CONFIG="$ROOT/device/child_image/mcuboot.conf;$ROOT/device/child_image/$DEVICE.mcuboot.conf"
-
+                ZEPHYR_TOOLCHAIN_VARIANT=zephyr west build \
+                    --build-dir "$ROOT/device/build/$DEVICE" "$ROOT/device" \
+                    --pristine \
+                    --board "$DEVICE" \
+                    --no-sysbuild \
+                    -- \
+                    -DNCS_TOOLCHAIN_VERSION=NONE \
+                    -DCONF_FILE="$ROOT/device/prj_release.conf" \
+                    -DEXTRA_CONF_FILE="`getExtraConfFiles $DEVICE`" \
+                    -DBOARD_ROOT="$ROOT" \
+                    -Dmcuboot_OVERLAY_CONFIG="$ROOT/device/child_image/mcuboot.conf;$ROOT/device/child_image/$DEVICE.mcuboot.conf"
 END
             createCentralCompileCommands
             ;;
